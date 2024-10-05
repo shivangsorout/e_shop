@@ -7,6 +7,7 @@ import 'package:e_shop/features/auth/view/widgets/email_text_field.dart';
 import 'package:e_shop/features/auth/view/widgets/header_text.dart';
 import 'package:e_shop/features/auth/view/widgets/password_text_field.dart';
 import 'package:e_shop/features/auth/view/widgets/richtext_button.dart';
+import 'package:e_shop/features/home/view/pages/shop_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -62,7 +63,14 @@ class _LoginPageState extends State<LoginPage> {
                   AuthButton(
                     buttonText: 'Login',
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
+                      if (_formKey.currentState!.validate()) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => ShopPage(),
+                          ),
+                          (route) => false,
+                        );
+                      }
                     },
                   ),
                   SizedBox(height: 0.015 * context.mqSize.height),

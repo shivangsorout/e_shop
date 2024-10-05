@@ -1,5 +1,7 @@
 import 'package:e_shop/core/constants/app_colors.dart';
+import 'package:e_shop/core/extensions/buildcontext/media_query_size.dart';
 import 'package:e_shop/features/auth/view/pages/signup_page.dart';
+import 'package:e_shop/features/home/view/pages/shop_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,6 +18,11 @@ class MyApp extends StatelessWidget {
       title: 'e-shop App',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: lightColor,
+            fontSize: 0.023 * context.mqSize.height,
+          ),
           color: primaryColor,
         ),
         fontFamily: 'Poppins',
@@ -32,6 +39,6 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SignupPage();
+    return const ShopPage();
   }
 }
