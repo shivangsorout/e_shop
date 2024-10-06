@@ -132,6 +132,11 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  clearError() {
+    _errorMessage = null;
+    notifyListeners();
+  }
+
   _loadingTrue({required String text}) {
     _isLoading = true;
     _loadingText = text;

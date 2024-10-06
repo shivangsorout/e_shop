@@ -5,7 +5,7 @@ import 'package:e_shop/features/auth/view/widgets/body_text.dart';
 import 'package:e_shop/features/auth/view/widgets/bold_text_button.dart';
 import 'package:e_shop/features/auth/view/widgets/email_text_field.dart';
 import 'package:e_shop/features/auth/view/widgets/header_text.dart';
-import 'package:e_shop/features/auth/view/widgets/loading_overlay_wrapper.dart';
+import 'package:e_shop/core/helpers/overlays/overlay_wrapper.dart';
 import 'package:e_shop/features/auth/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +30,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   @override
   Widget build(BuildContext context) {
     final authVM = Provider.of<AuthViewModel>(context);
-    return LoadingOverlayWrapper(
+    return OverlayWrapper(
+      viewModel: context.read<AuthViewModel>(),
       child: Scaffold(
         body: Form(
           key: _formKey,

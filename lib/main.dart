@@ -5,6 +5,7 @@ import 'package:e_shop/features/auth/view/pages/login_page.dart';
 import 'package:e_shop/features/auth/view/pages/verify_email_page.dart';
 import 'package:e_shop/features/auth/view_model/auth_view_model.dart';
 import 'package:e_shop/features/home/view/pages/shop_page.dart';
+import 'package:e_shop/features/home/view_model/shop_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider(create: (_) => ShopViewModel()),
       ],
       child: const MyApp(),
     ),

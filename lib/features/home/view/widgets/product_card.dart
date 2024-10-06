@@ -1,4 +1,5 @@
 import 'package:e_shop/core/constants/app_colors.dart';
+import 'package:e_shop/core/extensions/buildcontext/media_query_size.dart';
 import 'package:e_shop/features/home/view/widgets/network_image_viewer.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ class ProductCard extends StatefulWidget {
   final double price;
   final double discountPercentage;
   final bool displayDiscountedPrice;
+  final void Function()? onTap;
 
   const ProductCard({
     super.key,
@@ -18,6 +20,7 @@ class ProductCard extends StatefulWidget {
     required this.price,
     required this.discountPercentage,
     required this.displayDiscountedPrice,
+    required this.onTap,
   });
 
   @override
@@ -37,84 +40,96 @@ class _ProductCardState extends State<ProductCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 14,
-        horizontal: 18,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: whiteColor,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: NetworkImageViewer(
-              imgUrl: widget.imgUrl,
-            ),
-          ),
-          SizedBox(height: 15),
-          Text(
-            widget.name,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              color: blackColor,
-              fontSize: 18,
-            ),
-          ),
-          SizedBox(height: 7),
-          Text(
-            widget.desc,
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              color: blackColor,
-              fontSize: 18,
-            ),
-          ),
-          SizedBox(height: 12),
-          Row(
-            children: [
-              Text(
-                ' \$${(widget.price).toInt()}',
-                style: TextStyle(
-                  decoration: widget.displayDiscountedPrice
-                      ? TextDecoration.lineThrough
-                      : null,
-                  color: widget.displayDiscountedPrice
-                      ? Color(0xff808080)
-                      : blackColor,
-                  fontWeight: widget.displayDiscountedPrice
-                      ? FontWeight.w400
-                      : FontWeight.w500,
-                  fontStyle: FontStyle.italic,
-                ),
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: widget.onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: 0.016 * context.mqSize.height,
+          horizontal: 0.041 * context.mqSize.width,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: whiteColor,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: NetworkImageViewer(
+                imgUrl: widget.imgUrl,
               ),
-              if (widget.displayDiscountedPrice)
-                Row(
-                  children: [
-                    Text(
-                      '  \$${(widget.price - discountedPrice).toInt()}',
-                      style: TextStyle(
-                        color: blackColor,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.italic,
-                      ),
+            ),
+            SizedBox(height: 0.017 * context.mqSize.height),
+            Text(
+              widget.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: blackColor,
+                fontSize: 0.02 * context.mqSize.height,
+              ),
+            ),
+            SizedBox(height: 0.008 * context.mqSize.height),
+            Text(
+              widget.desc,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                color: blackColor,
+                fontSize: 0.02 * context.mqSize.height,
+              ),
+            ),
+            SizedBox(height: 0.0136 * context.mqSize.height),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  ' \$${(widget.price).toInt()}',
+                  style: TextStyle(
+                    decoration: widget.displayDiscountedPrice
+                        ? TextDecoration.lineThrough
+                        : null,
+                    color: widget.displayDiscountedPrice
+                        ? Color(0xff808080)
+                        : blackColor,
+                    fontWeight: widget.displayDiscountedPrice
+                        ? FontWeight.w400
+                        : FontWeight.w500,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 0.0182 * context.mqSize.height,
+                  ),
+                ),
+                if (widget.displayDiscountedPrice)
+                  Text(
+                    '  \$${(widget.price - discountedPrice).toInt()}',
+                    style: TextStyle(
+                      color: blackColor,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 0.0182 * context.mqSize.height,
                     ),
-                    Text(
+                  ),
+                if (widget.displayDiscountedPrice)
+                  Flexible(
+                    child: Text(
                       '  ${(widget.discountPercentage).toStringAsFixed(2)}% off',
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Color(0xff15F911),
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.italic,
+                        fontSize: 0.0182 * context.mqSize.height,
                       ),
                     ),
-                  ],
-                ),
-            ],
-          ),
-        ],
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

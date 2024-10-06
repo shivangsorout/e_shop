@@ -26,7 +26,7 @@ class NetworkImageViewer extends StatelessWidget {
             ),
           );
         },
-        fit: BoxFit.fitWidth,
+        fit: BoxFit.cover,
       ),
     );
   }
