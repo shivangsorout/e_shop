@@ -5,7 +5,10 @@ import 'package:e_shop/features/auth/view/widgets/body_text.dart';
 import 'package:e_shop/features/auth/view/widgets/bold_text_button.dart';
 import 'package:e_shop/features/auth/view/widgets/email_text_field.dart';
 import 'package:e_shop/features/auth/view/widgets/header_text.dart';
+import 'package:e_shop/features/auth/view/widgets/loading_overlay_wrapper.dart';
+import 'package:e_shop/features/auth/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   const ForgetPasswordPage({super.key});
@@ -26,53 +29,63 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: SafeArea(
-          minimum:
-              EdgeInsets.symmetric(horizontal: 0.046 * context.mqSize.width),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              HeaderText(),
-              Column(
-                children: [
-                  BodyText(
-                    text:
-                        'If you forgot your password, simply enter your email and we will send you a password reset link.',
-                  ),
-                  SizedBox(height: 0.0285 * context.mqSize.height),
-                  EmailTextField(emailController: _emailController),
-                ],
-              ),
-              Column(
-                children: [
-                  AuthButton(
-                    buttonText: 'Send reset link',
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
-                    },
-                  ),
-                  SizedBox(height: 0.015 * context.mqSize.height),
-                  BoldTextButton(
-                    onTap: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => LoginPage(),
-                        ),
-                        (route) => false,
-                      );
-                    },
-                    text: 'Back to login page',
-                  ),
-                  SizedBox(
-                    height: 0.057 * context.mqSize.height,
-                  ),
-                ],
-              )
-            ],
+    final authVM = Provider.of<AuthViewModel>(context);
+    return LoadingOverlayWrapper(
+      child: Scaffold(
+        body: Form(
+          key: _formKey,
+          child: SafeArea(
+            minimum:
+                EdgeInsets.symmetric(horizontal: 0.046 * context.mqSize.width),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                HeaderText(),
+                Column(
+                  children: [
+                    BodyText(
+                      text:
+                          'If you forgot your password, simply enter your email and we will send you a password reset link.',
+                    ),
+                    SizedBox(height: 0.0285 * context.mqSize.height),
+                    EmailTextField(
+                      emailController: _emailController,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    AuthButton(
+                      buttonText: 'Send reset link',
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          await authVM.sendPasswordReset(
+                            toEmail: _emailController.text,
+                          );
+                        }
+                      },
+                    ),
+                    SizedBox(height: 0.015 * context.mqSize.height),
+                    BoldTextButton(
+                      onTap: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                      text: 'Back to login page',
+                    ),
+                    SizedBox(
+                      height: 0.057 * context.mqSize.height,
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

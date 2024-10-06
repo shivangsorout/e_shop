@@ -5,9 +5,11 @@ class EmailTextField extends StatelessWidget {
   const EmailTextField({
     super.key,
     required TextEditingController emailController,
+    this.textInputAction = TextInputAction.next,
   }) : _emailController = emailController;
 
   final TextEditingController _emailController;
+  final TextInputAction textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class EmailTextField extends StatelessWidget {
       controller: _emailController,
       hintText: 'Email',
       keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.next,
+      textInputAction: textInputAction,
       validator: (value) {
         // Regular expression for validating an email
         String pattern =

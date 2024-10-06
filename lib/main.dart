@@ -1,11 +1,24 @@
 import 'package:e_shop/core/constants/app_colors.dart';
 import 'package:e_shop/core/extensions/buildcontext/media_query_size.dart';
-import 'package:e_shop/features/auth/view/pages/signup_page.dart';
+import 'package:e_shop/features/auth/repository/firebase_repo.dart';
+import 'package:e_shop/features/auth/view/pages/login_page.dart';
+import 'package:e_shop/features/auth/view/pages/verify_email_page.dart';
+import 'package:e_shop/features/auth/view_model/auth_view_model.dart';
 import 'package:e_shop/features/home/view/pages/shop_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseRepo().initialize();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthViewModel()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,8 +29,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'e-shop App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(
+            color: lightColor,
+          ),
           titleTextStyle: TextStyle(
             fontWeight: FontWeight.w700,
             color: lightColor,
@@ -39,6 +56,18 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ShopPage();
+    return Consumer<AuthViewModel>(
+      builder: (context, authVM, _) {
+        if (authVM.isAuthenticated) {
+          if (authVM.isEmailVerified) {
+            return ShopPage();
+          } else {
+            return VerifyEmailPage();
+          }
+        } else {
+          return LoginPage();
+        }
+      },
+    );
   }
 }
