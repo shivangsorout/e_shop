@@ -52,6 +52,13 @@ class MyApp extends StatelessWidget {
           ),
           color: primaryColor,
         ),
+        textTheme: TextTheme(
+          bodyMedium: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 0.0228 * context.mqSize.height,
+            color: blackColor,
+          ),
+        ),
         fontFamily: 'Poppins',
         useMaterial3: true,
         scaffoldBackgroundColor: lightColor,

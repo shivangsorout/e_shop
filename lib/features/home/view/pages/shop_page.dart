@@ -5,6 +5,7 @@ import 'package:e_shop/core/helpers/overlays/dialogs/logout_dialog.dart';
 import 'package:e_shop/features/auth/view/pages/login_page.dart';
 import 'package:e_shop/core/helpers/overlays/overlay_wrapper.dart';
 import 'package:e_shop/features/auth/view_model/auth_view_model.dart';
+import 'package:e_shop/features/home/view/pages/product_detail_page.dart';
 import 'package:e_shop/features/home/view/widgets/product_card.dart';
 import 'package:e_shop/features/home/view_model/shop_view_model.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -125,7 +126,13 @@ class _ShopPageState extends State<ShopPage> {
                         itemBuilder: (context, index) {
                           final product = shopVM.products[index];
                           return ProductCard(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ProductDetailPage(
+                                  productDetails: product,
+                                ),
+                              ));
+                            },
                             imgUrl: product.thumbnail,
                             name: product.title,
                             desc: product.description,

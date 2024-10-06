@@ -102,21 +102,19 @@ class _ProductCardState extends State<ProductCard> {
                           ? FontWeight.w400
                           : FontWeight.w500,
                       fontStyle: FontStyle.italic,
-                      fontSize: 0.0182 * context.mqSize.height,
+                      fontSize: 0.016 * context.mqSize.height,
                     ),
                   ),
                 ),
                 if (widget.displayDiscountedPrice)
-                  Flexible(
-                    child: Text(
-                      '  \$${(widget.price - discountedPrice).toInt()}',
-                      style: TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        color: blackColor,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 0.0182 * context.mqSize.height,
-                      ),
+                  Text(
+                    '  \$${(widget.price - discountedPrice).toInt()}',
+                    style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      color: blackColor,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 0.016 * context.mqSize.height,
                     ),
                   ),
                 if (widget.displayDiscountedPrice)
@@ -128,7 +126,7 @@ class _ProductCardState extends State<ProductCard> {
                         color: Color(0xff15F911),
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.italic,
-                        fontSize: 0.0182 * context.mqSize.height,
+                        fontSize: 0.016 * context.mqSize.height,
                       ),
                     ),
                   ),
