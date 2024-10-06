@@ -1,4 +1,5 @@
 import 'package:e_shop/core/constants/app_colors.dart';
+import 'package:e_shop/core/constants/constants.dart';
 import 'package:e_shop/core/extensions/buildcontext/media_query_size.dart';
 import 'package:e_shop/features/auth/repository/firebase_repo.dart';
 import 'package:e_shop/features/auth/view/pages/login_page.dart';
@@ -6,12 +7,19 @@ import 'package:e_shop/features/auth/view/pages/verify_email_page.dart';
 import 'package:e_shop/features/auth/view_model/auth_view_model.dart';
 import 'package:e_shop/features/home/view/pages/shop_page.dart';
 import 'package:e_shop/features/home/view_model/shop_view_model.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseRepo().initialize();
+
+  // Remote Configuration setting default value
+  final remoteConfig = FirebaseRemoteConfig.instance;
+  remoteConfig.setDefaults(const {
+    displayDiscountedPriceKey: true,
+  });
   runApp(
     MultiProvider(
       providers: [

@@ -1,4 +1,5 @@
 import 'package:e_shop/core/helpers/loading/loading_screen.dart';
+import 'package:e_shop/core/helpers/overlays/dialogs/error_dialog.dart';
 import 'package:flutter/material.dart';
 
 class OverlayWrapper extends StatefulWidget {
@@ -30,9 +31,12 @@ class _OverlayWrapperState extends State<OverlayWrapper> {
       LoadingScreen().hide();
     }
 
-    if (widget.viewModel.errorMessage != null &&
-        widget.viewModel.errorMessage.isNotEmpty) {
-      // Add dialog box code here
+    final String? errorMessage = widget.viewModel.errorMessage;
+
+    if (errorMessage != null && errorMessage.isNotEmpty) {
+      showErrorDialog(context, errorMessage).whenComplete(() {
+        widget.viewModel.clearError();
+      });
     }
   }
 

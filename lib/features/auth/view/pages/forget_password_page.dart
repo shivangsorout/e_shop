@@ -1,4 +1,5 @@
 import 'package:e_shop/core/extensions/buildcontext/media_query_size.dart';
+import 'package:e_shop/core/helpers/overlays/dialogs/password_reset_email_sent_dialog.dart';
 import 'package:e_shop/features/auth/view/pages/login_page.dart';
 import 'package:e_shop/features/auth/view/widgets/auth_button.dart';
 import 'package:e_shop/features/auth/view/widgets/body_text.dart';
@@ -65,6 +66,11 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                           await authVM.sendPasswordReset(
                             toEmail: _emailController.text,
                           );
+                          if ((authVM.errorMessage == null ||
+                                  authVM.errorMessage!.isEmpty) &&
+                              context.mounted) {
+                            showPasswordResetSentDialog(context);
+                          }
                         }
                       },
                     ),

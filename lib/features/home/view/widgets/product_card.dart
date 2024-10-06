@@ -87,30 +87,36 @@ class _ProductCardState extends State<ProductCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  ' \$${(widget.price).toInt()}',
-                  style: TextStyle(
-                    decoration: widget.displayDiscountedPrice
-                        ? TextDecoration.lineThrough
-                        : null,
-                    color: widget.displayDiscountedPrice
-                        ? Color(0xff808080)
-                        : blackColor,
-                    fontWeight: widget.displayDiscountedPrice
-                        ? FontWeight.w400
-                        : FontWeight.w500,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 0.0182 * context.mqSize.height,
+                Flexible(
+                  child: Text(
+                    ' \$${(widget.price).toInt()}',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      decoration: widget.displayDiscountedPrice
+                          ? TextDecoration.lineThrough
+                          : null,
+                      color: widget.displayDiscountedPrice
+                          ? Color(0xff808080)
+                          : blackColor,
+                      fontWeight: widget.displayDiscountedPrice
+                          ? FontWeight.w400
+                          : FontWeight.w500,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 0.0182 * context.mqSize.height,
+                    ),
                   ),
                 ),
                 if (widget.displayDiscountedPrice)
-                  Text(
-                    '  \$${(widget.price - discountedPrice).toInt()}',
-                    style: TextStyle(
-                      color: blackColor,
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 0.0182 * context.mqSize.height,
+                  Flexible(
+                    child: Text(
+                      '  \$${(widget.price - discountedPrice).toInt()}',
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: blackColor,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 0.0182 * context.mqSize.height,
+                      ),
                     ),
                   ),
                 if (widget.displayDiscountedPrice)

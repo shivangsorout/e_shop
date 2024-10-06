@@ -1,10 +1,13 @@
 import 'package:e_shop/core/constants/app_colors.dart';
+import 'package:e_shop/core/constants/constants.dart';
 import 'package:e_shop/core/extensions/buildcontext/media_query_size.dart';
+import 'package:e_shop/core/helpers/overlays/dialogs/logout_dialog.dart';
 import 'package:e_shop/features/auth/view/pages/login_page.dart';
 import 'package:e_shop/core/helpers/overlays/overlay_wrapper.dart';
 import 'package:e_shop/features/auth/view_model/auth_view_model.dart';
 import 'package:e_shop/features/home/view/widgets/product_card.dart';
 import 'package:e_shop/features/home/view_model/shop_view_model.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,12 +21,26 @@ class ShopPage extends StatefulWidget {
 class _ShopPageState extends State<ShopPage> {
   late final ScrollController _scrollController;
   ShopViewModel shopViewModel = ShopViewModel();
+  bool displayDiscountedPrice = true;
 
   @override
   void initState() {
     shopViewModel.fetchProducts();
     _scrollController = ScrollController();
+    settingRemoteConfig();
     super.initState();
+  }
+
+  settingRemoteConfig() {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    displayDiscountedPrice = remoteConfig.getBool(displayDiscountedPriceKey);
+    remoteConfig.onConfigUpdated.listen((RemoteConfigUpdate event) async {
+      await remoteConfig.activate();
+      setState(() {
+        displayDiscountedPrice =
+            remoteConfig.getBool(displayDiscountedPriceKey);
+      });
+    });
   }
 
   @override
@@ -40,18 +57,23 @@ class _ShopPageState extends State<ShopPage> {
                 appBar: AppBar(
                   title: Text('e-Shop'),
                   actions: [
+                    // Logout Icon for logging out of the application
                     IconButton(
-                      onPressed: () async {
+                      onPressed: () {
                         final authVM =
                             Provider.of<AuthViewModel>(context, listen: false);
-                        await authVM.logout();
-                        if (context.mounted) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()),
-                            (route) => false,
-                          );
-                        }
+                        showLogOutDialog(context).then((value) async {
+                          if (value) {
+                            await authVM.logout();
+                            if (context.mounted) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                                (route) => false,
+                              );
+                            }
+                          }
+                        });
                       },
                       icon: Icon(Icons.logout),
                     ),
@@ -110,7 +132,7 @@ class _ShopPageState extends State<ShopPage> {
                             price: product.price,
                             discountPercentage:
                                 product.discountPercentage.toDouble(),
-                            displayDiscountedPrice: true,
+                            displayDiscountedPrice: displayDiscountedPrice,
                           );
                         },
                       ),
