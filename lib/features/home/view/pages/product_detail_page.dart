@@ -1,18 +1,18 @@
 import 'package:e_shop/core/constants/app_colors.dart';
-import 'package:e_shop/core/constants/constants.dart';
 import 'package:e_shop/core/extensions/buildcontext/media_query_size.dart';
 import 'package:e_shop/features/home/model/product.dart';
 import 'package:e_shop/features/home/view/widgets/image_slider.dart';
 import 'package:e_shop/features/home/view/widgets/review_tile.dart';
 import 'package:e_shop/features/home/view/widgets/star_ratings.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Product productDetails;
+  final bool displayDiscountedPrice;
   const ProductDetailPage({
     super.key,
     required this.productDetails,
+    required this.displayDiscountedPrice,
   });
 
   @override
@@ -25,26 +25,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   void initState() {
+    displayDiscountedPrice = widget.displayDiscountedPrice;
     discountedPrice = widget.productDetails.price *
         (widget.productDetails.discountPercentage / 100);
-    settingRemoteConfig();
     super.initState();
-  }
-
-  settingRemoteConfig() {
-    final remoteConfig = FirebaseRemoteConfig.instance;
-    displayDiscountedPrice = remoteConfig.getBool(displayDiscountedPriceKey);
-    remoteConfig.onConfigUpdated.listen((RemoteConfigUpdate event) async {
-      await remoteConfig.activate();
-      setState(() {
-        displayDiscountedPrice =
-            remoteConfig.getBool(displayDiscountedPriceKey);
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    displayDiscountedPrice = widget.displayDiscountedPrice;
     return Scaffold(
       appBar: AppBar(
         title: Text('e-Shop'),

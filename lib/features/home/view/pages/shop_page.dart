@@ -130,6 +130,8 @@ class _ShopPageState extends State<ShopPage> {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => ProductDetailPage(
                                   productDetails: product,
+                                  displayDiscountedPrice:
+                                      displayDiscountedPrice,
                                 ),
                               ));
                             },
